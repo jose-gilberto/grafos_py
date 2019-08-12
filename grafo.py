@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+import matplotlib.pyplot as plt
+import networkx as nx
 
 class Grafo:
     """Representação de um grafo simples utilizando mapas adjascentes."""
@@ -13,8 +17,11 @@ class Grafo:
             self._visitado = False
             self._elemento = e
 
+        def elemento(self):
+            return self._elemento
+
         def __str__(self):
-            return 'Vértice: ' + str(self._elemento)
+            return str(self._elemento)
 
         def __hash__(self):
             # Vai permitir que o vertice se comporte como um map/set (conjunto)
@@ -46,7 +53,7 @@ class Grafo:
 
         def __str__(self):
             """Retorna o """
-            return 'Aresta: ' + str(self._origem) + ' ' + str(self._destino)
+            return str(self._origem) + str(self._destino) + ';' + str(self._peso)
 
         def __hash__(self):
             # Vai permitir que a aresta se comporte como um map/set
@@ -142,7 +149,6 @@ class Grafo:
 
 # Grafo.importar_txt(caminho="./grafo.txt")
 
-print('\nVértices:')
 # Criando grafo
 grafo_exemplo = Grafo()
 # Inserindo vertices
@@ -150,16 +156,30 @@ v1 = grafo_exemplo.inserir_vertice('a')
 v2 = grafo_exemplo.inserir_vertice('b')
 v3 = grafo_exemplo.inserir_vertice('c')
 v4 = grafo_exemplo.inserir_vertice('d')
+v5 = grafo_exemplo.inserir_vertice('e')
+v6 = grafo_exemplo.inserir_vertice('f')
 # Inserindo arestas
 grafo_exemplo.inserir_aresta(v1, v2)
 grafo_exemplo.inserir_aresta(v1, v3)
 grafo_exemplo.inserir_aresta(v3, v4)
 grafo_exemplo.inserir_aresta(v2, v4)
-# Exibindo vertices
-for vertice in grafo_exemplo.vertices():
-    print(vertice)
 
-print('\nArestas:')
-# Exibindo arestas
+G = nx.Graph()
+
+for vertice in grafo_exemplo.vertices():
+   G.add_node(vertice.elemento())
+
 for aresta in grafo_exemplo.arestas():
-    print(aresta)
+    origem, destino = aresta.vertices()
+    G.add_edge(origem.elemento(), destino.elemento())
+
+print(G.number_of_nodes())
+#G = nx.petersen_graph()
+
+#plt.subplot(121)
+nx.draw(G, with_labels = True)
+#plt.subplot(122)
+#nx.draw_shell(G, with_labels=True, font_weight='bold')
+plt.show()
+
+
