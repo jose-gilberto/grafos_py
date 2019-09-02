@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import matplotlib.pyplot as plt
-import networkx as nx
-
 class Grafo:
     """Representação de um grafo simples utilizando mapas adjascentes."""
 
@@ -19,6 +16,9 @@ class Grafo:
 
         def elemento(self):
             return self._elemento
+
+        def visitar(self):
+            self._visitado = not self._visitado
 
         def __str__(self):
             return str(self._elemento)
@@ -128,6 +128,27 @@ class Grafo:
         self._entrada[v][u] = a
         return a
 
+    def buscaEmProfundidade(self, u, v):
+        """u - vertice atual, v - vertice final"""
+        aux = u
+        pilha = []
+        pilha.insert(0, self._entrada[aux])
+        
+        while (len(pilha)):
+            aux.visitar()
+
+            if aux is v:
+                print('Caminho encontrado!')
+                break
+            
+            for vertice in pilha[0]:
+                print(vertice)
+
+
+            aux.visitar()
+            break
+            
+
     # TODO: implementar método para leitura de grafos em txt
     @staticmethod
     def importar_txt(caminho=None, direcionado=False):
@@ -146,9 +167,6 @@ class Grafo:
         finally:
             arquivo.close()
 
-
-# Grafo.importar_txt(caminho="./grafo.txt")
-
 # Criando grafo
 grafo_exemplo = Grafo()
 # Inserindo vertices
@@ -164,22 +182,4 @@ grafo_exemplo.inserir_aresta(v1, v3)
 grafo_exemplo.inserir_aresta(v3, v4)
 grafo_exemplo.inserir_aresta(v2, v4)
 
-G = nx.Graph()
-
-for vertice in grafo_exemplo.vertices():
-   G.add_node(vertice.elemento())
-
-for aresta in grafo_exemplo.arestas():
-    origem, destino = aresta.vertices()
-    G.add_edge(origem.elemento(), destino.elemento())
-
-print(G.number_of_nodes())
-#G = nx.petersen_graph()
-
-#plt.subplot(121)
-nx.draw(G, with_labels = True)
-#plt.subplot(122)
-#nx.draw_shell(G, with_labels=True, font_weight='bold')
-plt.show()
-
-
+grafo_exemplo.buscaEmProfundidade(v1, v1)
